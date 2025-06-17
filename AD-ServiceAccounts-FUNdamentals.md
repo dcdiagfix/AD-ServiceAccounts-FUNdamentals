@@ -151,7 +151,7 @@ When choosing a service account, it's important to consider factors such as the 
 - Password sent in clear text
 - Initial access or move laterally
 
-![PPT File](./images/attack-default-credentials.png)
+![PPT File](./images/ppt-attack-default-credentials.png)
 
 ### LLMNR/Relay
 
@@ -323,9 +323,7 @@ Look for AD specific delegations
 
 ## Naming Conventions
 
-A great start, unfortunately, over time these get changed, the chosen prefix
-makes the sAMAccountName too long, it then gets truncated, or it is 
-accidentally mistyped.
+A great start, unfortunately, over time these get changed, the chosen prefix makes the sAMAccountName too long, it then gets truncated, or it is accidentally mistyped.
 
 ### Naming convention examples
 
@@ -340,7 +338,7 @@ accidentally mistyped.
 
 ---
 
-## Setting Standards: Account Definitions 
+## Setting Standards: Account Definitions
 
 | Category | Primary Accounts | Secondary Accounts | Service Accounts | Shared Accounts | Shared Mailbox Accounts | Exchange Resource Accounts |
 |----------|-----------------|-------------------|------------------|----------------|-----------------------|--------------------------|
@@ -348,7 +346,7 @@ accidentally mistyped.
 | VPN Remote Access | Permitted | Prohibited | Prohibited | Prohibited | Prohibited | Prohibited |
 | Exchange Mailbox | Permitted | Prohibited | Prohibited | Prohibited | Permitted | Prohibited |
 | Always Disabled | Not Required | Not Required | Not Required | Not Required | Enablement by exception only | Required |
-| Logon Restrictions "LogonTo"/URA | Not Required | Not Required | Required Case by Case Basis | Not Required | Not Required |
+| Logon Restrictions "LogonTo"/URA | Not Required | Not Required | Required Case by Case Basis | Not Required |Required | Required |
 | Responsible for Account Creation | IGA | IT Security | IT Security | IT Security | Enterprise Messaging | Enterprise Messaging |
 | Required Approvals | Human Resources | IT Security | IT Security | IT Security | Enterprise Messaging | Enterprise Messaging |
 | Account Validation | N/A | Bi-Annual | Annual | Quarterly | Annual | Annual |
@@ -380,97 +378,75 @@ Define Measure Analyze Improve Control
 
 Excessive privilege, password risks, and lack of oversight on service accounts.
 
-## What to Measure:
+## What to Measure
 
-- Total number of service 
-accounts
-- % with non-expiring 
-passwords
+- Total number of service accounts
+- % with non-expiring passwords
 - % with Domain Admin rights
-- % with interactive logon 
-enabled
-- % without description or 
-owner metadata
+- % with interactive logon enabled
+- % without description or owner metadata
 
-## Root Causes:
+## Root Causes
 
 - Legacy app requirements
 - No naming convention
 - Lack of ownership tracking
-- Manual provisioning with no 
-review
+- Manual provisioning with no review
 
-## Quick Wins:
+## Quick Wins
 
-- Tag all service accounts via 
-naming or metadata
-- Disable interactive logon 
-where not required
-- Rotate and set expiry on 
-passwords
-- Set up password vaulting (e.g., 
-CyberArk, BeyondTrust)
+- Tag all service accounts via naming or metadata
+- Disable interactive logon where not required
+- Rotate and set expiry on passwords
+- Set up password vaulting (e.g., CyberArk, BeyondTrust)
 
-## Sustainability:
+## Sustainability
 
-- Monthly/quarterly review of 
-service accounts
-- Monitor with change tracking 
-or DSP alerts
-- Enforce naming conventions 
-via provisioning scripts
-- Audit via GPOs, alerting, and 
-reporting
-- Onboard service accounts 
-into your PAM solution
+- Monthly/quarterly review of service accounts
+- Monitor with change tracking or DSP alerts
+- Enforce naming conventions via provisioning scripts
+- Audit via GPOs, alerting, and reporting
+- Onboard service accounts into your PAM solution
 
-## Objectives:
+## Objectives
 
 - Identify all service accounts
-- Reduce overprivileged 
-accounts
-- Enforce strong password 
-policies
-- Minimize attack surface (e.g., 
-no interactive logon)
+- Reduce overprivileged accounts
+- Enforce strong password policies
+- Minimize attack surface (e.g., no interactive logon)
 
-## Tools:
+## Tools
 
-- PowerShell (Get-ADUser, GetACL, Search-ADAccount, etc.)
-- Third-party tools like 
-PingCastle, BloodHound
+- PowerShell (Get-ADUser, Get-ACL, Search-ADAccount, etc.)
+- Third-party tools like PingCastle, BloodHound
 - SIEM
 - Event Logs
 
-## Risk Insights:
+## Risk Insights
 
-- Service accounts used 
-interactively = lateral 
-movement risk
-- Domain Admin accounts with 
-SPNs = Kerberoasting risk
-- Accounts without ownership = 
-zero accountability
+- Service accounts used interactively = lateral movement risk
+- Domain Admin accounts with SPNs = Kerberoasting risk
+- Accounts without ownership = zero accountability
 
-## Bigger Projects:
+## Bigger Projects
 
 - Migrate services to gMSAs
-- Use tiered administration to 
-limit exposure
-- Implement least privilege 
-RBAC
-- Automate compliance 
-reporting
+- Use tiered administration to limit exposure
+- Implement least privilege RBAC
+- Automate compliance reporting
 
-## Scope: 
+## Scope
+
 AD forest(s) and potentially Entra ID hybrid identities
 
 ---
 
-# Securing Service Accounts
+## Securing Service Accounts
 
-- **Least Privilege** No Domain Admin access unless necessary
-  - SPOILER: it’s almost NEVER necessary
+- **Least Privilege**
+
+No Domain Admin access unless necessary - SPOILER: it’s almost NEVER necessary
+
 - **PIM/PAM Managed**
 - Use xMSA Instead of standard user accounts
 - Fine Grained Password Policies/Authentication Policies
@@ -493,8 +469,7 @@ Allows for granular delegation and control over service accounts, from the highe
 ## Authentication Policies & Policy Silos
 
 - Available since Windows Server 2012 R2
-- Defines the Kerberos protocol ticket-granting ticket (TGT) lifetime properties 
-and authentication access control conditions for an account type. 
+- Defines the Kerberos protocol ticket-granting ticket (TGT) lifetime properties and authentication access control conditions for an account type.
 - Authentication policies control the following:
   - The TGT lifetime for the account, which is set to be non-renewable.
   - The criteria that device accounts need to meet to sign in with a password or a certificate.
@@ -506,8 +481,7 @@ and authentication access control conditions for an account type.
 
 ## Protected Users
 
-What about protected users? Should we put all highly privileged service 
-accounts in protected users?
+What about protected users? Should we put all highly privileged service accounts in protected users?
 
 It depends…
 
@@ -536,8 +510,7 @@ employeeID,employeeType
 
 ## Can you get me a list of all mail …
 
-….. enabled service accounts and their manager as we need to enable MFA on 
-these.
+….. enabled service accounts and their manager as we need to enable MFA on these.
 
 ```powershell
 Get-ADUser -Filter {(employeeID -eq "999999") -and (employeeType -eq “serviceMailEnabled")} 
@@ -551,13 +524,12 @@ employeeID,employeeType
 
 ## Workflows
 
-- **Manager validation:** Every service account MUST have an owner, that owner is 
-responsible for any and all actions taken by the account! If a manager is 
-terminated, account validation triggers and the managers/manager + IT is 
-notified a new manager is required for the account.
+- **Manager validation:**
+Every service account MUST have an owner, that owner is responsible for any and all actions taken by the account! If a manager is terminated, account validation triggers and the managers/manager + IT is notified a new manager is required for the account.
   - No manager = no account use.
-- **Account validation:** account owner (manager) responsible for annual/biannual account verification and organizing password reset/change; if they don’t 
-the account is disabled!
+
+- **Account validation:**
+account owner (manager) responsible for annual/bi-annual account verification and organizing password reset/change; if they don’t the account is disabled!
 
 ---
 
@@ -565,9 +537,7 @@ the account is disabled!
 
 ### Retiring old service accounts
 
-To minimize the impact in environments of accidental disablement of accounts, 
-the retirement of accounts must be planned to allow quick remediation should 
-any issues occur, an example plan may look like the below: 
+To minimize the impact in environments of accidental disablement of accounts, the retirement of accounts must be planned to allow quick remediation should any issues occur, an example plan may look like the below:
 
 - Disable the account in situ
 - Wait 7 days
@@ -575,8 +545,6 @@ any issues occur, an example plan may look like the below:
 - Wait 7 days
 - Remove permissions from the account (any groups/delegations)
 - Wait 7 days
-- Delete the account 
+- Delete the account
 
 ---
-
-# Questions?
