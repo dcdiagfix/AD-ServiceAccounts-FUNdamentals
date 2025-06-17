@@ -6,8 +6,10 @@
 
 ## What, the who, the why?
 
-Service accounts represent a critical blind spot in enterprise identity strategies — often overprivileged, rarely inventoried, and difficult to manage at scale.  
-With inconsistent naming, unclear ownership, and poor lifecycle management, service accounts are one of the hardest identity types to discover, audit, and secure in Active Directory.  
+Service accounts represent a critical blind spot in enterprise identity strategies — often overprivileged, rarely inventoried, and difficult to manage at scale.
+
+With inconsistent naming, unclear ownership, and poor lifecycle management, service accounts are one of the hardest identity types to discover, audit, and secure in Active Directory.
+
 The lack of centralized visibility and privilege boundaries makes service accounts prime targets — highly discoverable by attackers and rarely governed by strong controls.
 
 ---
